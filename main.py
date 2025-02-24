@@ -164,7 +164,7 @@ def bot_decision_draw(deck: List[int]):
 
 def player_draw_card(deck: List[int]):
     if deck:
-        card: number = deck.pop()
+        card: any = deck.pop()
         player_hand.append(card)
         player["last_draw"]: number = card
         print(f"Player drew a card")
@@ -185,10 +185,6 @@ def bot_draw_card(deck: List[int]):
             new_wildcard: string = wildcards._pick_random()['name']
             bot_wildcard_deck.append(new_wildcard)
             print("Bot received a wildcard: " + new_wildcard)
-
-
-
-cards = ['A', '2', '3']
 
 def reset_hands():
     player["last_draw"] = 0
@@ -238,9 +234,17 @@ def play_blackjack():
 play_blackjack()
 
 
-index = 0
 
-for card in cards:
-    card_to_display = " " + card
-    OLED12864_I2C.show_string(index*2, 0, card_to_display, 1)
-    index += 1
+def main_display():
+
+    index = 0
+    for card in player_hand:
+        card_to_display = " " + card
+        OLED12864_I2C.show_string(index*2, 0, card_to_display, 1)
+        index += 1
+    
+    index = 0
+    for bcard in bot_hand:
+        card_to_display = " " + bcard
+        OLED12864_I2C.show_string(index*2, 3, card_to_display, 1)
+        index += 1

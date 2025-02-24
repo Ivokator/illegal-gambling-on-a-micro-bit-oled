@@ -1,4 +1,3 @@
-let card_to_display: string;
 //  Constants
 let INITIAL_POINTS = 10
 let INITIAL_BET = 1
@@ -227,11 +226,11 @@ function bot_decision_draw(deck: any[]) {
     
 }
 
-function player_draw_card(deck: number[]) {
+function player_draw_card(deck: any[]) {
     let card: number;
     let new_wildcard: string;
     if (deck) {
-        card = deck.pop()
+        card = _py.py_array_pop(deck)
         player_hand.push(card)
         player["last_draw"] = card
         console.log("Player drew a card")
@@ -246,11 +245,11 @@ function player_draw_card(deck: number[]) {
     
 }
 
-function bot_draw_card(deck: number[]) {
+function bot_draw_card(deck: any[]) {
     let card: number;
     let new_wildcard: string;
     if (deck) {
-        card = deck.pop()
+        card = _py.py_array_pop(deck)
         bot_hand.push(card)
         bot["last_draw"] = card
         console.log("Bot drew a card")
@@ -265,7 +264,6 @@ function bot_draw_card(deck: number[]) {
     
 }
 
-let cards = ["A", "2", "3"]
 function reset_hands() {
     player["last_draw"] = 0
     bot["last_draw"] = 0
@@ -312,9 +310,19 @@ function play_blackjack() {
 }
 
 play_blackjack()
-let index = 0
-for (let card of cards) {
-    card_to_display = " " + card
-    OLED12864_I2C.showString(index * 2, 0, card_to_display, 1)
-    index += 1
+function main_display() {
+    let card_to_display: string;
+    let index = 0
+    for (let card of player_hand) {
+        card_to_display = " " + card
+        OLED12864_I2C.showString(index * 2, 0, card_to_display, 1)
+        index += 1
+    }
+    index = 0
+    for (let bcard of bot_hand) {
+        card_to_display = " " + bcard
+        OLED12864_I2C.showString(index * 2, 3, card_to_display, 1)
+        index += 1
+    }
 }
+
